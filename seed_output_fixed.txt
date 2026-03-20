@@ -1,0 +1,49 @@
+﻿[dotenv@17.3.1] injecting env (0) from .env -- tip: ΓÜí∩╕Å secrets for agents: https://dotenvx.com/as2
+Connected to MongoDB for seeding
+Cleared existing users
+node : Seeding error: 
+TypeError: next is not 
+a function
+At line:1 char:1
++ node server/seed.js 
+> seed_output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Seeding error   
+ : ... not a functi    
+on:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+    at 
+model.<anonymous> 
+(D:\dti 
+project\DTI_NOTES SHARI
+NG\server\models\User.j
+s:25:5)
+    at async 
+Kareem.execPre (D:\dti 
+project\DTI_NOTES SHARI
+NG\server\node_modules\
+kareem\index.js:70:24)
+    at async 
+model.$__save (D:\dti 
+project\DTI_NOTES SHARI
+NG\server\node_modules\
+mongoose\lib\model.js:3
+93:5)
+    at async 
+model.save (D:\dti 
+project\DTI_NOTES SHARI
+NG\server\node_modules\
+mongoose\lib\model.js:6
+63:5)
+    at async seedDB 
+(D:\dti 
+project\DTI_NOTES SHARI
+NG\server\seed.js:80:13
+)

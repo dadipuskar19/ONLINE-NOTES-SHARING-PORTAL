@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notes Sharing Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <div id="app">
+    <!-- ========== LOGIN VIEW ========== -->
+    <section id="login-view" class="login-view">
+      <div class="login-card">
+        <div class="login-logo">
+          <img src="logo.jpeg" alt="Logo">
+        </div>
+        <h1 class="app-title">Vignan's Institute of Information Technology</h1>
+        
+
+        <form id="login-form">
+          <div class="field-group">
+            
+            <div class="role-options">
+              <label>
+                <input type="radio" name="role" value="student" checked />
+                Student
+              </label>
+              <label>
+                <input type="radio" name="role" value="faculty" />
+                Faculty
+              </label>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Enter username"
+              required
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn primary-btn">Login</button>
+
+          <p id="login-error" class="error-text"></p>
+
+          
+        </form>
+      </div>
+    </section>
+
+    <!-- ========== DASHBOARD VIEW ========== -->
+    <section id="dashboard-view" class="dashboard-view hidden">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-logo">
+            <img src="logo.jpeg" alt="Logo">
+          </div>
+          <h1 class="topbar-title">Department of Information Technology</h1>
+          <span id="role-badge" class="badge"></span>
+        </div>
+        <div class="topbar-right">
+          <span id="user-name-display" class="user-name"></span>
+          <button id="logout-btn" class="btn ghost-btn">Logout</button>
+        </div>
+      </header>
+
+      <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <nav>
+            <!-- Shared nav -->
+            <button class="nav-link" data-view="overview-section">
+              Overview
+            </button>
+
+            <!-- Faculty-only nav -->
+            <button class="nav-link faculty-only" data-view="faculty-attendance-section">
+              Attendance
+            </button>
+            <button class="nav-link faculty-only" data-view="faculty-homework-section">
+              Homeworks
+            </button>
+            <button class="nav-link faculty-only" data-view="faculty-notes-section">
+              Class Notes
+            </button>
+            <button class="nav-link faculty-only" data-view="faculty-notifications-section">
+              Notifications
+            </button>
+            <button class="nav-link faculty-only" data-view="faculty-students-section">
+              Students
+            </button>
+            <button class="nav-link faculty-only" data-view="faculty-marks-section">
+              Manage Marks
+            </button>
+
+            <!-- Student-only nav -->
+            <button class="nav-link student-only" data-view="student-notes-section">
+              My Notes
+            </button>
+            <button class="nav-link student-only" data-view="student-attendance-section">
+              My Attendance
+            </button>
+            <button class="nav-link student-only" data-view="student-marks-section">
+              My Marks
+            </button>
+            <button class="nav-link student-only" data-view="student-homework-section">
+              Homework & Upload
+            </button>
+            <button class="nav-link student-only" data-view="student-quizzes-section">
+              Quizzes
+            </button>
+            <button class="nav-link student-only" data-view="student-notifications-section">
+              Notifications
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main id="dashboard-main" class="main-content">
+          <!-- Overview (shared) -->
+          <section id="overview-section" class="view-section">
+            <h2>Overview</h2>
+            <div id="overview-cards" class="card-grid"></div>
+
+            <div class="two-column">
+              <div class="card">
+                <h3>Latest Notifications</h3>
+                <ul id="overview-notifications-list" class="simple-list"></ul>
+              </div>
+
+              <div class="card">
+                <h3>Latest Class Notes</h3>
+                <ul id="overview-notes-list" class="simple-list"></ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- FACULTY SECTIONS -->
+
+          <!-- Faculty: Attendance -->
+          <section id="faculty-attendance-section" class="view-section hidden">
+            <h2>Manage Attendance</h2>
+            <p class="section-description">
+              Update overall attendance percentage for each student.
+            </p>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Current Attendance (%)</th>
+                    <th>Update Attendance</th>
+                  </tr>
+                </thead>
+                <tbody id="faculty-attendance-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Faculty: Homework -->
+          <section id="faculty-homework-section" class="view-section hidden">
+            <h2>Homework & Submissions</h2>
+            <div class="two-column">
+              <div class="card">
+                <h3>Create New Homework</h3>
+                <form id="create-homework-form">
+                  <div class="field-group">
+                    <label for="hw-title">Title</label>
+                    <input id="hw-title" type="text" required />
+                  </div>
+                  <div class="field-group">
+                    <label for="hw-description">Description / Instructions</label>
+                    <textarea id="hw-description" rows="3" required></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label for="hw-due-date">Due Date</label>
+                    <input id="hw-due-date" type="date" required />
+                  </div>
+                  <button type="submit" class="btn primary-btn">
+                    Add Homework
+                  </button>
+                  <p id="hw-create-message" class="success-text"></p>
+                </form>
+              </div>
+
+              <div class="card">
+                <h3>Existing Homeworks</h3>
+                <ul id="faculty-homework-list" class="simple-list"></ul>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Homework Submissions</h3>
+              <table id="homework-submissions-table" class="data-table">
+                <thead>
+                  <tr>
+                    <th>Homework</th>
+                    <th>Student</th>
+                    <th>Submission Link</th>
+                    <th>Notes</th>
+                    <th>Marks</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Faculty: Notes -->
+          <section id="faculty-notes-section" class="view-section hidden">
+            <h2>Upload / Share Class Notes</h2>
+            <div class="two-column">
+              <div class="card">
+                <h3>Add Notes</h3>
+                <form id="add-note-form">
+                  <div class="field-group">
+                    <label for="note-title">Title</label>
+                    <input id="note-title" type="text" required />
+                  </div>
+                  <div class="field-group">
+                    <label for="note-description">Description</label>
+                    <textarea id="note-description" rows="3" required></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label for="note-link">Link (Drive / PDF / URL)</label>
+                    <input
+                      id="note-link"
+                      type="url"
+                      placeholder="https://..."
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn primary-btn">
+                    Share Notes
+                  </button>
+                  <p id="note-add-message" class="success-text"></p>
+                </form>
+              </div>
+
+              <div class="card">
+                <h3>All Notes</h3>
+                <ul id="faculty-notes-list" class="simple-list"></ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Faculty: Notifications -->
+          <section id="faculty-notifications-section" class="view-section hidden">
+            <h2>Send Notifications</h2>
+            <div class="two-column">
+              <div class="card">
+                <h3>New Notification</h3>
+                <form id="add-notification-form">
+                  <div class="field-group">
+                    <label for="notif-title">Title</label>
+                    <input id="notif-title" type="text" required />
+                  </div>
+                  <div class="field-group">
+                    <label for="notif-message">Message</label>
+                    <textarea id="notif-message" rows="3" required></textarea>
+                  </div>
+                  <button type="submit" class="btn primary-btn">
+                    Post Notification
+                  </button>
+                  <p id="notif-add-message" class="success-text"></p>
+                </form>
+              </div>
+
+              <div class="card">
+                <h3>All Notifications</h3>
+                <ul id="faculty-notifications-list" class="simple-list"></ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Faculty: Students -->
+          <section id="faculty-students-section" class="view-section hidden">
+            <h2>Students</h2>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Attendance (%)</th>
+                    <th>Avg Marks</th>
+                  </tr>
+                </thead>
+                <tbody id="faculty-students-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Faculty: Manage Marks -->
+          <section id="faculty-marks-section" class="view-section hidden">
+            <h2>Manage Marks</h2>
+            <p class="section-description">Update exam and assignment marks for students.</p>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Midterm 1</th>
+                    <th>Midterm 2</th>
+                    <th>Assignment</th>
+                    <th>Update</th>
+                  </tr>
+                </thead>
+                <tbody id="faculty-marks-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- STUDENT SECTIONS -->
+
+          <!-- Student: Notes -->
+          <section id="student-notes-section" class="view-section hidden">
+            <h2>My Class Notes</h2>
+            <p class="section-description">
+              Notes shared by your faculty will appear here.
+            </p>
+            <div class="card">
+              <ul id="student-notes-list" class="simple-list"></ul>
+            </div>
+          </section>
+
+          <!-- Student: Attendance -->
+          <section id="student-attendance-section" class="view-section hidden">
+            <h2>My Attendance</h2>
+            <div class="card">
+              <p>
+                Overall Attendance:
+                <span id="student-attendance-value" class="highlight-number"></span>%
+              </p>
+            </div>
+          </section>
+
+          <!-- Student: Marks -->
+          <section id="student-marks-section" class="view-section hidden">
+            <h2>My Marks</h2>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Exam</th>
+                    <th>Marks</th>
+                  </tr>
+                </thead>
+                <tbody id="student-marks-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Student: Homework -->
+          <section id="student-homework-section" class="view-section hidden">
+            <h2>Homework & Upload</h2>
+            <div class="two-column">
+              <div class="card">
+                <h3>Assigned Homeworks</h3>
+                <ul id="student-homework-list" class="simple-list"></ul>
+              </div>
+
+              <div class="card">
+                <h3>Upload Homework</h3>
+                <form id="student-upload-homework-form">
+                  <div class="field-group">
+                    <label for="student-hw-select">Homework</label>
+                    <select id="student-hw-select" required></select>
+                  </div>
+                  <div class="field-group">
+                    <label for="student-hw-link">
+                      Submission Link (Drive / GitHub / URL)
+                    </label>
+                    <input
+                      id="student-hw-link"
+                      type="url"
+                      placeholder="https://..."
+                      required
+                    />
+                  </div>
+                  <div class="field-group">
+                    <label for="student-hw-notes">Notes (optional)</label>
+                    <textarea id="student-hw-notes" rows="2"></textarea>
+                  </div>
+                  <button type="submit" class="btn primary-btn">
+                    Submit Homework
+                  </button>
+                  <p id="student-hw-submit-message" class="success-text"></p>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <!-- Student: Quizzes -->
+          <section id="student-quizzes-section" class="view-section hidden">
+            <h2>Quick Quiz</h2>
+            <div class="card">
+              <p class="section-description">
+                Test your knowledge with this quick quiz!
+              </p>
+              <form id="quiz-form"></form>
+              <p id="quiz-result" class="success-text"></p>
+            </div>
+          </section>
+
+          <!-- Student: Notifications -->
+          <section id="student-notifications-section" class="view-section hidden">
+            <h2>Notifications</h2>
+            <div class="card">
+              <ul id="student-notifications-list" class="simple-list"></ul>
+            </div>
+          </section>
+        </main>
+      </div>
+    </section>
+  </div>
+
+  
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
