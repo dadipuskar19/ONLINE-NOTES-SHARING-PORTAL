@@ -14,7 +14,12 @@ router.post('/register', async (req, res) => {
         await user.save();
 
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-        res.json({ token, user: { id: user._id, username: user.username, name: user.name, role: user.role } });
+        
+        // Exclude password from response
+        const userObj = user.toObject();
+        delete userObj.password;
+        
+        res.json({ token, user: userObj });
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
     }
@@ -31,9 +36,28 @@ router.post('/login', async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-        res.json({ token, user: { id: user._id, username: user.username, name: user.name, role: user.role } });
+
+        // Exclude password from response
+        const userObj = user.toObject();
+        delete userObj.password;
+
+        res.json({ token, user: userObj });
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
+    }
+});
+
+// Get current user profile
+router.get('/me', async (req, res) => {
+    const token = req.header('x-auth-token');
+    if (!token) return res.status(401).json({ message: 'No token, authorization denied' });
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select('-password');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
+    } catch (err) {
+        res.status(401).json({ message: 'Token is not valid' });
     }
 });
 

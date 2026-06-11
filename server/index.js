@@ -23,6 +23,7 @@ app.use('/api/notes', require('./routes/notes'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/homework', require('./routes/homework'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/quizzes', require('./routes/quizzes'));
 
 
 

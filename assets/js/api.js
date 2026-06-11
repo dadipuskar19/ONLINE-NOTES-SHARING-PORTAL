@@ -145,6 +145,23 @@ const api = {
         return await res.json();
     },
 
+    async fetchProfile() {
+        try {
+            const token = this.getToken();
+            if (!token) return null;
+            const res = await fetch(`${API_URL}/auth/me`, {
+                headers: { 'x-auth-token': token }
+            });
+            if (!res.ok) return null;
+            const data = await res.json();
+            localStorage.setItem('user', JSON.stringify(data));
+            return data;
+        } catch (err) {
+            console.error("fetchProfile error:", err);
+            return null;
+        }
+    },
+
     // backward compatibility alias
     async updateMarks(studentId, marks) {
         return this.updateStudentMarks(studentId, marks);

@@ -15,6 +15,7 @@ const auth = (req, res, next) => {
     }
 };
 
+
 // Get all students (Faculty only)
 router.get('/students', auth, async (req, res) => {
     if (req.user.role !== 'faculty') return res.status(403).json({ message: 'Forbidden' });

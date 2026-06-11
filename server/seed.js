@@ -4,67 +4,75 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const users = [
+    // Faculty
     {
         username: "faculty1",
         password: "pass123",
-        name: "faculty1",
+        name: "Prasana",
         role: "faculty",
         subject: "IT - Java Programming"
     },
     {
         username: "faculty2",
         password: "pass123",
-        name: "faculty2",
+        name: "G.MANI",
         role: "faculty",
         subject: "IT - Web Technologies"
     },
     {
         username: "faculty3",
         password: "pass123",
-        name: "faculty3",
+        name: "NEELIMA HOD-IT",
         role: "faculty",
         subject: "IT - Database Systems"
     },
+    // Students
     {
-        username: "faculty4",
+        username: "student1",
         password: "pass123",
-        name: "faculty4",
-        role: "faculty",
-        subject: "IT - Computer Networks"
+        name: "Puskar",
+        role: "student",
+        roll: "IT2-001",
+        attendance: 90,
+        marks: { Midterm1: 85, Midterm2: 88, Assignment: 95 }
+    },
+    {
+        username: "student2",
+        password: "pass123",
+        name: "Hemant",
+        role: "student",
+        roll: "IT2-002",
+        attendance: 85,
+        marks: { Midterm1: 80, Midterm2: 82, Assignment: 90 }
+    },
+    {
+        username: "student3",
+        password: "pass123",
+        name: "Chaitanya",
+        role: "student",
+        roll: "IT2-003",
+        attendance: 88,
+        marks: { Midterm1: 82, Midterm2: 85, Assignment: 92 }
+    },
+    {
+        username: "student4",
+        password: "pass123",
+        name: "Divya",
+        role: "student",
+        roll: "IT2-004",
+        attendance: 92,
+        marks: { Midterm1: 88, Midterm2: 90, Assignment: 95 }
+    },
+    {
+        username: "student5",
+        password: "pass123",
+        name: "Navya",
+        role: "student",
+        roll: "IT2-005",
+        attendance: 87,
+        marks: { Midterm1: 84, Midterm2: 86, Assignment: 91 }
     }
 ];
-
-// Add 10 students
-for (let i = 1; i <= 10; i++) {
-    users.push({
-        username: `student${i}`,
-        password: "pass123",
-        name: `student ${i}`,
-        role: "student",
-        roll: `IT2-0${i < 10 ? '0' : ''}${i}`,
-        attendance: Math.floor(Math.random() * 21) + 75, // 75-95%
-        marks: {
-            Midterm1: Math.floor(Math.random() * 51) + 40, // 40-90
-            Midterm2: Math.floor(Math.random() * 51) + 40,
-            Assignment: Math.floor(Math.random() * 11) + 90 // 90-100
-        }
-    });
-}
-
-// Add specifically requested user
-users.push({
-    username: "dadipuskar",
-    password: "password123",
-    name: "Dadi Puskar",
-    role: "student",
-    roll: "IT2-099",
-    attendance: 90,
-    marks: {
-        Midterm1: 85,
-        Midterm2: 88,
-        Assignment: 95
-    }
-});
 
 const seedDB = async () => {
     try {
@@ -82,7 +90,7 @@ const seedDB = async () => {
             await newUser.save();
         }
 
-        console.log('Seeded users successfully');
+        console.log('Seeded users successfully with ONLY requested names');
         mongoose.disconnect();
     } catch (err) {
         console.error('Seeding error:', err);

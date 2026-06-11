@@ -190,11 +190,28 @@ async function renderedRefresh(sectionId) {
 
 async function renderAllViews() {
   try {
-      [notesData, notificationsData, homeworkAssignments] = await Promise.all([
+      const promises = [
           api.fetchNotes(),
           api.fetchNotifications(),
           api.fetchHomework()
-      ]);
+      ];
+      
+      // If logged in, fetch latest profile to get updated marks/attendance
+      if (api.getToken()) {
+          promises.push(api.fetchProfile());
+      }
+
+      const results = await Promise.all(promises);
+      notesData = results[0];
+      notificationsData = results[1];
+      homeworkAssignments = results[2];
+      
+      const profile = results[3]; // The result of fetchProfile
+      if (profile && profile.role) {
+          currentUser = profile;
+          currentRole = currentUser.role;
+      }
+
       if (currentRole === 'faculty') {
           homeworkSubmissions = await api.fetchSubmissions();
           studentsList = await api.fetchStudents();
@@ -242,7 +259,7 @@ function renderOverview() {
       totalStudents === 0
         ? 0
         : Math.round(
-            mockUsers.student.reduce(
+            studentsList.reduce(
               (sum, s) => sum + (s.attendance || 0),
               0
             ) / totalStudents
@@ -776,7 +793,7 @@ function renderStudentHomework() {
 
   homeworkAssignments.forEach((hw) => {
     const option = document.createElement("option");
-    option.value = hw.id;
+    option.value = hw._id;
     option.textContent = `${hw.title} (Due ${hw.dueDate})`;
     select.appendChild(option);
   });
